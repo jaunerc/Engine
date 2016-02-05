@@ -1,13 +1,14 @@
 /*
  * Copyright (c) 2013 Philip Diffenderfer http://magnos.org
+ *
+ * Modified by Cyrill Jauner
  */
 package ch.windmill.engine;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- *
- * @author Cyrill Jauner
+ * This class represents a chronograph to track time cylces.
  */
 public class Chronograph {
     
@@ -19,6 +20,12 @@ public class Chronograph {
     private String name;
     private String rateString;
 
+    /**
+     * Creates a new Chronograph object.
+     * @param interval The refresh interval of the rate String.
+     * @param name The name of this.
+     * @param unit The time unit.
+     */
     public Chronograph(long interval, String name, TimeUnit unit) {
         this.name = name;
         setRefreshInterval(interval, unit);
@@ -26,10 +33,6 @@ public class Chronograph {
 
     public String getRateString() {
         return rateString;
-    }
-
-    public void setRefreshInterval(long interval, TimeUnit unit) {
-        refreshInterval = unit.toNanos(interval);
     }
 
     public String getName() {
@@ -40,6 +43,18 @@ public class Chronograph {
         this.name = name;
     }
     
+    /**
+     * Sets the refresh interval.
+     * @param interval The refresh interval of the rate String.
+     * @param unit The time unit of the interval parameter.
+     */
+    public void setRefreshInterval(long interval, TimeUnit unit) {
+        refreshInterval = unit.toNanos(interval);
+    }
+    
+    /**
+     * Calculates the delta time between now and the last cycle.
+     */
     public void cycle() {
         long currTime = System.nanoTime();
         long currDelta = currTime - lastTime;
@@ -56,10 +71,17 @@ public class Chronograph {
         lastTime = currTime;
     }
     
+    /**
+     * Updates the rate string.
+     */
     private void updateRateString() {
         rateString = name+": "+rate;
     }
     
+    /**
+     * Resets this chronograph. This method sets all time fields to zero and updates
+     * the rate string.
+     */
     public void reset() {
         lastTime = System.nanoTime();
         time = 0;

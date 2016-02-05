@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2013 Philip Diffenderfer http://magnos.org
+ *
+ * Modified by Cyrill Jauner
  */
 package ch.windmill.engine;
 

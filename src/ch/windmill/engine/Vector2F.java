@@ -24,7 +24,7 @@
 package ch.windmill.engine;
 
 /**
- *
+ * This class represents a 2 dimensional vector with float coordinates.
  * @author Cyrill Jauner
  */
 public class Vector2F {

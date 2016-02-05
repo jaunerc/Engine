@@ -1,12 +1,14 @@
 /*
  * Copyright (c) 2013 Philip Diffenderfer http://magnos.org
+ *
+ * Modified by Cyrill Jauner
  */
 package ch.windmill.engine;
 
 import java.awt.Graphics2D;
 
 /**
- *
+ * This class represents a variable loop.
  * @author jaunerc
  */
 public class VariableLoop implements Loopable {

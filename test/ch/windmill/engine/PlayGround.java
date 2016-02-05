@@ -78,7 +78,7 @@ public class PlayGround implements App {
     }
 
     @Override
-    public void exit() {
+    public void terminate() {
     }
 
     @Override
