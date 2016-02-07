@@ -39,10 +39,12 @@ public class State {
     }
     
     public void reset() {
-        startTime = 0;
-        currentTime = 0;
+        long resetT = System.nanoTime();
+        
+        startTime = resetT;
+        currentTime = resetT;
+        lastTime = resetT;
         currentDeltaNanos = 0;
-        lastTime = 0;
         
         updateChrono.reset();
         drawChrono.reset();

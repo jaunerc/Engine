@@ -40,11 +40,12 @@ public class Scene {
         this.dt = dt;
         bodies = new ArrayList<>();
         init();
+        System.out.println("Work with "+dt+" updates");
     }
     
     private void init() {
         Circle c = new Circle(150, 150, 20);
-        c.velocity = new Vector2F(3, 3);
+        c.velocity = new Vector2F(100, 80);
         bodies.add(c);
     }
     

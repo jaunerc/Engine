@@ -62,8 +62,9 @@ public class PlayGround implements App {
     @Override
     public void update(State state) {
         accu += state.currentDeltaSeconds;
-        
+        //System.out.println("accu: "+accu);
         if(accu >= scene.dt) {
+            //System.out.println("scene step");
             scene.step();
             accu -= scene.dt;
         }
