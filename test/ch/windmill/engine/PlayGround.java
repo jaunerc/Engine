@@ -23,6 +23,7 @@
  */
 package ch.windmill.engine;
 
+import ch.windmill.engine.input.AppInput;
 import ch.windmill.engine.move.Body;
 import ch.windmill.engine.move.Scene;
 import java.awt.Color;
@@ -37,7 +38,7 @@ public class PlayGround implements App {
     
     public static void main(String[] args) {
         PlayGround pg = new PlayGround();
-        State state = new State();
+        AppState state = new AppState();
         VariableLoop loop = new VariableLoop();
         AppScreen screen = new AppScreen(pg, state, loop, 500, 400);
         screen.showInFrame();
@@ -60,18 +61,12 @@ public class PlayGround implements App {
     }
 
     @Override
-    public void update(State state) {
-        accu += state.currentDeltaSeconds;
-        //System.out.println("accu: "+accu);
-        if(accu >= scene.dt) {
-            //System.out.println("scene step");
-            scene.step();
-            accu -= scene.dt;
-        }
+    public void update(AppState state) {
+        
     }
 
     @Override
-    public void draw(State state, Graphics2D g2) {
+    public void draw(AppState state, Graphics2D g2) {
         g2.setColor(Color.red);
         for(Body b : scene.bodies) {
             b.draw(g2);
@@ -85,6 +80,11 @@ public class PlayGround implements App {
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public void input(AppInput input) {
+        
     }
     
 }

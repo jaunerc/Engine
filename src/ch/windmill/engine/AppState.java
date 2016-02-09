@@ -11,17 +11,22 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Cyrill Jauner
  */
-public class State {
+public class AppState {
     
+    public float seconds;
+    public long millis;
+    public long nanos;
+    public long micros;
     public long startTime;
     public long currentTime;
-    public long currentDeltaNanos;
-    public float currentDeltaSeconds;
+    public float forward = 0;
+    public float backward = 0;
+    public float interpolate = 0;
     public long lastTime;
     public Chronograph updateChrono;
     public Chronograph drawChrono;
 
-    public State() {
+    public AppState() {
         updateChrono = new Chronograph(500, "Updates per second", TimeUnit.MILLISECONDS);
         drawChrono = new Chronograph(500, "Draws per second", TimeUnit.MILLISECONDS);
     }
@@ -29,25 +34,31 @@ public class State {
     public long tick() {
         lastTime = currentTime;
         currentTime = System.nanoTime();
-        return (setCurrDelta(currentTime - lastTime));
+        return (currentTime - lastTime);
     }
     
-    private long setCurrDelta(long currDeltaNanos) {
-        currentDeltaNanos = currDeltaNanos;
-        currentDeltaSeconds = currDeltaNanos * 0.000000001f;
-        return currentDeltaNanos;
+    public long getElapsedSinceTick() {
+	return (System.nanoTime() - currentTime);
     }
-    
-    public void reset() {
+
+    public void setElapsed(long nanosElapsed) {
+        nanos = nanosElapsed;
+        micros = nanosElapsed / 1000L;
+        millis = nanosElapsed / 1000000L;
+        seconds = (float) (nanosElapsed * 0.000000001);
+    }
+
+    public long reset() {
         long resetT = System.nanoTime();
         
         startTime = resetT;
         currentTime = resetT;
         lastTime = resetT;
-        currentDeltaNanos = 0;
         
         updateChrono.reset();
         drawChrono.reset();
+        
+        return resetT;
     }
     
     public void updateChronoCycle() {

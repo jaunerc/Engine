@@ -5,9 +5,11 @@
  */
 package ch.windmill.engine;
 
+import ch.windmill.engine.input.AppInput;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
@@ -21,14 +23,16 @@ public class AppScreen extends JPanel {
     
     private App app;
     private Loopable loop;
-    private State state;
+    private AppState state;
+    private AppInput input;
     private Graphics2D g2;
     private BufferedImage buffer;
     
-    public AppScreen(App app, State state, Loopable loop, int width, int height) {
+    public AppScreen(App app, AppState state, Loopable loop, int width, int height) {
         this.app = app;
         this.loop = loop;
         this.state = state;
+        input = new AppInput();
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         
         Dimension d = new Dimension(width, height);
@@ -53,6 +57,10 @@ public class AppScreen extends JPanel {
      * The loop invokes the app.update and the loop.iterate method in each iteration.
      */
     public void startApp() {
+        input.mouseInside = getParent().contains( MouseInfo.getPointerInfo().getLocation() );
+	addMouseListener( input );
+	addMouseMotionListener( input );
+        
         resetGraphics();
         
         app.start();
@@ -60,7 +68,7 @@ public class AppScreen extends JPanel {
         loop.init(state);
         
         while(app.isRunning()) {
-            loop.iterate(app, state, g2);
+            loop.iterate(app, state, input, g2);
             render();
             resetGraphics();
         }
