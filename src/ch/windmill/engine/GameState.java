@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Cyrill Jauner
  */
-public class AppState {
+public class GameState {
     
     public float seconds;
     public long millis;
@@ -26,7 +26,7 @@ public class AppState {
     public Chronograph updateChrono;
     public Chronograph drawChrono;
 
-    public AppState() {
+    public GameState() {
         updateChrono = new Chronograph(500, "Updates per second", TimeUnit.MILLISECONDS);
         drawChrono = new Chronograph(500, "Draws per second", TimeUnit.MILLISECONDS);
     }

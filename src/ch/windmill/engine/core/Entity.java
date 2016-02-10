@@ -21,19 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ch.windmill.engine.move;
+package ch.windmill.engine.core;
 
-import ch.windmill.engine.Vector2F;
+import ch.windmill.engine.GameState;
 import java.awt.Graphics2D;
-
 
 /**
  *
  * @author jaunerc
  */
-public interface Shape {
+public interface Entity {
     
-    void draw(Graphics2D g2);
+    void draw(GameState state, Graphics2D g2);
     
-    Vector2F center();
+    void update(GameState state);
+    
+    boolean isExpired();
+    
+    void expire();
+    
+    void onExpire();
 }

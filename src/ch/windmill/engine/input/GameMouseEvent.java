@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 jaunerc.
+ * Copyright 2016 Cyrill Jauner.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ch.windmill.engine.move;
+package ch.windmill.engine.input;
 
-import ch.windmill.engine.Vector2F;
+import java.awt.event.MouseEvent;
 
 /**
  *
- * @author jaunerc
+ * @author Cyrill Jauner
  */
-public abstract class Body implements Shape {
-    public Vector2F position;
-    public Vector2F velocity;
+public class GameMouseEvent {
     
-    public Body(float x, float y) {
-        position = new Vector2F(x, y);
-        velocity = new Vector2F();
+    public enum EventType {
+        Click, Press, Release, Enter, Exit
+    }
+    
+    public EventType type;
+    public MouseEvent e;
+
+    public GameMouseEvent(EventType type, MouseEvent e) {
+        this.type = type;
+        this.e = e;
     }
 }

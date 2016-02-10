@@ -5,7 +5,7 @@
  */
 package ch.windmill.engine;
 
-import ch.windmill.engine.input.AppInput;
+import ch.windmill.engine.input.GameInput;
 import java.awt.Graphics2D;
 
 /**
@@ -15,12 +15,12 @@ import java.awt.Graphics2D;
 public class VariableLoop implements Loopable {
     
     @Override
-    public void init(AppState state) {
+    public void onStart(GameState state) {
         state.reset();
     }
 
     @Override
-    public boolean iterate(App app, AppState state, AppInput input, Graphics2D g2) {
+    public boolean iterate(Game app, GameState state, GameInput input, Graphics2D g2) {
         state.tick();
         state.updateChronoCycle();
         app.update(state);

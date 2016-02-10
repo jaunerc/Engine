@@ -24,68 +24,66 @@
 package ch.windmill.engine;
 
 import ch.windmill.engine.core.Entity;
-import ch.windmill.engine.input.GameInput;
+import ch.windmill.engine.core.Vector2F;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
  * @author jaunerc
  */
-public class PlayGround implements Game {
+public class CircleEntity implements Entity {
     
-    private boolean running;
-    private List<Entity> entities;
-    
-    public static void main(String[] args) {
-        Game game = new PlayGround();
-        Loopable loop = new InterpolatedLoop( 3, 20, TimeUnit.MILLISECONDS);
-        GameState state = new GameState();
-        GameScreen screen = new GameScreen(game, state, loop, 600, 500);
-        screen.setBackground(Color.black);
-        screen.showInFrame();
-        screen.start(); 
-    }
-    
-    @Override
-    public void start() {
-        entities = new ArrayList<>();
-        entities.add(new CircleEntity(100, 100, Color.yellow, null));
-        running = true;
-    }
+    public Rectangle2D.Float boundary;
+    public Ellipse2D.Float ellipse = new Ellipse2D.Float();
+    public Color color;
+    public Vector2F pos, lastPos, vel;
+    public float radius;
 
+    public CircleEntity(float x, float y, Color color, Rectangle2D.Float boundary) {
+        float angle = (float)(Math.random()*6.28);
+        float speed = (float)(Math.random()*100) + 100;
+        
+        this.color = color;
+        this.boundary = boundary;
+        pos = new Vector2F(x, y);
+        lastPos = new Vector2F();
+        vel = new Vector2F((float)Math.cos( angle ) * speed, (float)Math.sin( angle ) * speed);
+        radius = (float)(Math.random()*20) + 10;
+    }
+    
+    
+    
     @Override
-    public void input(GameInput input) {
-        // ToDo
+    public void draw(GameState state, Graphics2D g2) {
+        ellipse.x = (pos.x - lastPos.x) * state.interpolate + lastPos.x -radius;
+        ellipse.y = (pos.y - lastPos.y) * state.interpolate + lastPos.y -radius;
+        ellipse.width = radius * 2;
+	ellipse.height = radius * 2;
+        
+        g2.setColor(color);
+        g2.fill(ellipse);
     }
 
     @Override
     public void update(GameState state) {
-        for(Entity e : entities) {
-            e.update(state);
-        }
+        lastPos = Vector2F.copyOf(pos);
+	pos.add(Vector2F.multiply(vel, state.seconds));
     }
 
     @Override
-    public void draw(GameState state, Graphics2D g2) {
-        for(Entity e : entities) {
-            e.draw(state, g2);
-        }
+    public boolean isExpired() {
+        return false;
     }
 
     @Override
-    public void terminate() {
-        for(Entity e : entities) {
-            e.onExpire();
-        }
+    public void expire() {
     }
 
     @Override
-    public boolean isRunning() {
-        return running;
+    public void onExpire() {
     }
     
 }

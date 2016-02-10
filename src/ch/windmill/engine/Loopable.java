@@ -3,7 +3,7 @@
  */
 package ch.windmill.engine;
 
-import ch.windmill.engine.input.AppInput;
+import ch.windmill.engine.input.GameInput;
 import java.awt.Graphics2D;
 
 /**
@@ -16,13 +16,15 @@ public interface Loopable {
      * Initializes this loop. This method should be invoked first.
      * @param state The current application state.
      */
-    void init(AppState state);
+    void onStart(GameState state);
     
     /**
      * Invokes one iteration step. This method should contain routines of the game loop.
      * @param app The running application.
      * @param state The current application state.
+     * @param input
      * @param g2 Graphics context.
+     * @return 
      */
-    boolean iterate(App app, AppState state, AppInput input, Graphics2D g2);
+    boolean iterate(Game app, GameState state, GameInput input, Graphics2D g2);
 }

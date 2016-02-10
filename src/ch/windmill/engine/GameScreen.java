@@ -5,7 +5,7 @@
  */
 package ch.windmill.engine;
 
-import ch.windmill.engine.input.AppInput;
+import ch.windmill.engine.input.GameInput;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,20 +19,20 @@ import javax.swing.JPanel;
  *
  * @author jaunerc
  */
-public class AppScreen extends JPanel {
+public class GameScreen extends JPanel {
     
-    private App app;
+    private Game game;
     private Loopable loop;
-    private AppState state;
-    private AppInput input;
+    private GameState state;
+    private GameInput input;
     private Graphics2D g2;
     private BufferedImage buffer;
     
-    public AppScreen(App app, AppState state, Loopable loop, int width, int height) {
-        this.app = app;
+    public GameScreen(Game game, GameState state, Loopable loop, int width, int height) {
+        this.game = game;
         this.loop = loop;
         this.state = state;
-        input = new AppInput();
+        input = new GameInput();
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         
         Dimension d = new Dimension(width, height);
@@ -42,8 +42,8 @@ public class AppScreen extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        if(g2 != null && buffer != null) {
-            render();
+        if(g != null && buffer != null) {
+            renderGraphics(g);
         }
     }
 
@@ -53,29 +53,29 @@ public class AppScreen extends JPanel {
     }
     
     /**
-     * Starts the application. This method creates a loop that runs as long as the app is not terminated.
-     * The loop invokes the app.update and the loop.iterate method in each iteration.
+     * Starts the game. This method creates a loop that runs as long as the game is not terminated.
+     * The loop invokes the game.update and the loop.iterate method in each iteration.
      */
-    public void startApp() {
+    public void start() {
         input.mouseInside = getParent().contains( MouseInfo.getPointerInfo().getLocation() );
 	addMouseListener( input );
 	addMouseMotionListener( input );
         
         resetGraphics();
         
-        app.start();
+        game.start();
         
-        loop.init(state);
+        loop.onStart(state);
         
-        while(app.isRunning()) {
-            loop.iterate(app, state, input, g2);
-            render();
-            resetGraphics();
+        while(game.isRunning()) {
+            if(loop.iterate(game, state, input, g2)) {
+                renderGraphics(getGraphics());
+                resetGraphics();
+            }
         }
     }
     
-    public void render() {
-        Graphics g = getGraphics();
+    private void renderGraphics(Graphics g) {
         g.drawImage(buffer, 0, 0, this);
         g.dispose();
     }

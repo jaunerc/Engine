@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ch.windmill.engine;
+package ch.windmill.engine.core;
 
 /**
  * This class represents a 2 dimensional vector with float coordinates.
@@ -90,6 +90,11 @@ public class Vector2F {
     
     public static Vector2F copyOf(Vector2F v) {
         return new Vector2F(v.x, v.y);
+    }
+    
+    public void set(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
     public double getX() {

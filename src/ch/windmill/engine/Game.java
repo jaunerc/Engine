@@ -5,14 +5,14 @@
  */
 package ch.windmill.engine;
 
-import ch.windmill.engine.input.AppInput;
+import ch.windmill.engine.input.GameInput;
 import java.awt.Graphics2D;
 
 /**
  * A app is a general abstraction for an application.
  * @author Cyrill Jauner
  */
-public interface App {
+public interface Game {
     
     /**
      * Starts the application.
@@ -20,21 +20,21 @@ public interface App {
     void start();
     
     
-    void input(AppInput input);
+    void input(GameInput input);
     
     /**
      * Updates the application. A typical routine in this method is position updates of
      * drawable objects.
      * @param state The current application state.
      */
-    void update(AppState state);
+    void update(GameState state);
     
     /**
      * Draw drawable objects with the given graphics context.
      * @param state The current application state.
      * @param g2 Graphics context to draw with.
      */
-    void draw(AppState state, Graphics2D g2);
+    void draw(GameState state, Graphics2D g2);
     
     /**
      * Terminates the application.

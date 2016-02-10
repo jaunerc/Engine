@@ -76,6 +76,7 @@ public class Chronograph {
      */
     private void updateRateString() {
         rateString = name+": "+rate;
+        System.out.println(rateString);
     }
     
     /**
