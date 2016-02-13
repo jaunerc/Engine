@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
- *
+ * This class represents a Screen to display the game.
  * @author jaunerc
  */
 public class GameScreen extends JPanel {
@@ -28,6 +28,14 @@ public class GameScreen extends JPanel {
     private Graphics2D g2;
     private BufferedImage buffer;
     
+    /**
+     * Creates a new GameScreen object.
+     * @param game The game to play.
+     * @param state The state of the game.
+     * @param loop The gameloop
+     * @param width The width of this screen in pixels.
+     * @param height The height of this screen in pixels.
+     */
     public GameScreen(Game game, GameState state, Loopable loop, int width, int height) {
         this.game = game;
         this.loop = loop;
@@ -53,8 +61,8 @@ public class GameScreen extends JPanel {
     }
     
     /**
-     * Starts the game. This method creates a loop that runs as long as the game is not terminated.
-     * The loop invokes the game.update and the loop.iterate method in each iteration.
+     * Starts the game. This method creates a loop that runs as long as the game is running.
+     * The loop invokes the game.update and the loop.iterate methods in each iteration.
      */
     public void start() {
         input.mouseInside = getParent().contains( MouseInfo.getPointerInfo().getLocation() );
@@ -75,11 +83,18 @@ public class GameScreen extends JPanel {
         }
     }
     
+    /**
+     * Draws the buffer to the screen.
+     * @param g The Graphics context to draw the buffer.
+     */
     private void renderGraphics(Graphics g) {
         g.drawImage(buffer, 0, 0, this);
         g.dispose();
     }
     
+    /**
+     * Resets the graphics context of the buffer.
+     */
     private void resetGraphics() {
         g2 = (Graphics2D) buffer.getGraphics();
         g2.setColor(getBackground());
@@ -87,6 +102,9 @@ public class GameScreen extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
     
+    /**
+     * Shows this screen in a JFrame.
+     */
     public void showInFrame() {
         JFrame frame = new JFrame("Engine test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

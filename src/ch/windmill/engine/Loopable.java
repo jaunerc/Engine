@@ -20,11 +20,11 @@ public interface Loopable {
     
     /**
      * Invokes one iteration step. This method should contain routines of the game loop.
-     * @param app The running application.
+     * @param game The running application.
      * @param state The current application state.
-     * @param input
+     * @param input The game input object.
      * @param g2 Graphics context.
      * @return 
      */
-    boolean iterate(Game app, GameState state, GameInput input, Graphics2D g2);
+    boolean iterate(Game game, GameState state, GameInput input, Graphics2D g2);
 }

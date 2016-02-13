@@ -1,25 +1,7 @@
 /*
- * The MIT License
+ * Copyright (c) 2013 Philip Diffenderfer http://magnos.org
  *
- * Copyright 2016 jaunerc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Modified by Cyrill Jauner
  */
 package ch.windmill.engine;
 
@@ -31,8 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
- * @author jaunerc
+ * This class represents a Circle.
  */
 public class CircleEntity implements Entity {
     
@@ -41,13 +22,16 @@ public class CircleEntity implements Entity {
     public Color color;
     public Vector2F pos, lastPos, vel;
     public float radius;
-
+    
+    private boolean expired;
+    
     public CircleEntity(float x, float y, Color color, Rectangle2D.Float boundary) {
         float angle = (float)(Math.random()*6.28);
         float speed = (float)(Math.random()*100) + 100;
         
         this.color = color;
         this.boundary = boundary;
+        expired = false;
         pos = new Vector2F(x, y);
         lastPos = new Vector2F();
         vel = new Vector2F((float)Math.cos( angle ) * speed, (float)Math.sin( angle ) * speed);
@@ -60,6 +44,10 @@ public class CircleEntity implements Entity {
     public void draw(GameState state, Graphics2D g2) {
         ellipse.x = (pos.x - lastPos.x) * state.interpolate + lastPos.x -radius;
         ellipse.y = (pos.y - lastPos.y) * state.interpolate + lastPos.y -radius;
+        //ellipse.x = pos.x + state.backward * vel.x -radius;
+        //ellipse.y = pos.y + state.backward * vel.y -radius;
+        //ellipse.x = pos.x + state.forward * vel.x -radius;
+        //ellipse.y = pos.y + state.forward * vel.y -radius;
         ellipse.width = radius * 2;
 	ellipse.height = radius * 2;
         
@@ -71,15 +59,54 @@ public class CircleEntity implements Entity {
     public void update(GameState state) {
         lastPos = Vector2F.copyOf(pos);
 	pos.add(Vector2F.multiply(vel, state.seconds));
+        
+        handleBoundaryCollision();
+    }
+    
+    private void handleBoundaryCollision() {
+        float bl = boundary.x + radius;
+	float br = boundary.x + boundary.width - radius;
+	float bt = boundary.y + radius;
+	float bb = boundary.y + boundary.height - radius;
+        
+        if(pos.x < bl) {
+            vel.x *= -1;
+            pos.x = bl;
+            colorUpdate();
+        }
+        if(pos.x > br) {
+            vel.x *= -1;
+            pos.x = br;
+            colorUpdate();
+        }
+        if(pos.y < bt) {
+            vel.y *= -1;
+            pos.y = bt;
+            colorUpdate();
+        }
+        if(pos.y > bb) {
+            vel.y *= -1;
+            pos.y = bb;
+            colorUpdate();
+        }
+    }
+    
+    private void colorUpdate() {
+        int alpha = color.getAlpha();
+        if(alpha > 0) {
+            alpha -= 51;
+        }
+        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
     }
 
     @Override
     public boolean isExpired() {
-        return false;
+        return expired;
     }
 
     @Override
     public void expire() {
+        expired = false;
     }
 
     @Override

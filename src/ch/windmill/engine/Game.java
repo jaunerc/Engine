@@ -19,7 +19,10 @@ public interface Game {
      */
     void start();
     
-    
+    /**
+     * Handles game input.
+     * @param input 
+     */
     void input(GameInput input);
     
     /**

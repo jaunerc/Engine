@@ -80,7 +80,7 @@ public class Chronograph {
     }
     
     /**
-     * Resets this chronograph. This method sets all time fields to zero and updates
+     * Resets this chronograph. This method resets all time fields and updates
      * the rate string.
      */
     public void reset() {

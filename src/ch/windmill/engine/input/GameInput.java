@@ -1,25 +1,7 @@
 /*
- * The MIT License
+ * Copyright (c) 2013 Philip Diffenderfer http://magnos.org
  *
- * Copyright 2016 Cyrill Jauner.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Modified by Cyrill Jauner
  */
 package ch.windmill.engine.input;
 
@@ -30,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.event.MouseInputListener;
 
 /**
- *
+ * A GameInput object listens for any game input and saves it.
  * @author Cyrill Jauner
  */
 public class GameInput implements MouseInputListener{
@@ -43,6 +25,9 @@ public class GameInput implements MouseInputListener{
     public boolean mouseMoving = false;
     public Queue<GameMouseEvent> mouseEvents = new ConcurrentLinkedQueue<>();
     
+    /**
+     * Removes any input information of this object.
+     */
     public void clear() {
         mouseDownCount = 0;
         mouseUpCount = 0;
@@ -92,6 +77,8 @@ public class GameInput implements MouseInputListener{
     public void mouseDragged(MouseEvent e) {
         mouseDragging = true;
         mouseMoving = true;
+        mouseX = e.getX();
+	mouseY = e.getY();
     }
 
     @Override
